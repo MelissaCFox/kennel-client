@@ -10,7 +10,16 @@ export const AnimalForm = () => {
     // Component state
     const [animal, setAnimal] = useState({})
     const history = useHistory()
+    const [initialLocationId, setInitialLocationId] = useState("")
+    useEffect(()=> {
+        if (animal) {
+            setInitialLocationId(animal.location_id)
 
+        } else {
+            return False
+        }
+    },[animal])
+    
     // Is there a a URL parameter??
     const editMode = animalId ? true : false  // true or false
 
@@ -46,9 +55,9 @@ export const AnimalForm = () => {
                     id: animal.id,
                     name: animal.name,
                     breed: animal.breed,
-                    locationId: locationId,
-                    treatment: animal.treatment,
-                    customerId: parseInt(localStorage.getItem("kennel_customer"))
+                    status: animal.status,
+                    location_id: locationId,
+                    customer_id: parseInt(localStorage.getItem("kennel_customer"))
                 })
                     .then(() => history.push("/animals"))
             } else {
@@ -56,9 +65,9 @@ export const AnimalForm = () => {
                 addAnimal({
                     name: animal.name,
                     breed: animal.breed,
-                    locationId: locationId,
-                    treatment: animal.treatment,
-                    customerId: parseInt(localStorage.getItem("kennel_customer"))
+                    status: animal.status,
+                    location_id: locationId,
+                    customer_id: parseInt(localStorage.getItem("kennel_customer"))
                 })
                     .then(() => history.push("/animals"))
             }
@@ -92,7 +101,7 @@ export const AnimalForm = () => {
                 <div className="form-group">
                     <label htmlFor="locationId">Location: </label>
                     <select name="locationId" className="form-control"
-                        value={animal.location_id}
+                        defaultValue={initialLocationId}
                         onChange={handleControlledInputChange}>
 
                         <option value="0">Select a location</option>
@@ -108,9 +117,9 @@ export const AnimalForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="treatment">Treatments: </label>
-                    <textarea type="text" name="treatment" className="form-control"
-                        value={animal.treatment}
+                    <label htmlFor="status">Status: </label>
+                    <textarea type="text" name="status" className="form-control"
+                        value={animal.status}
                         onChange={handleControlledInputChange}>
                     </textarea>
                 </div>
