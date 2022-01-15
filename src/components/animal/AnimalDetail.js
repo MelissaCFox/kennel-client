@@ -8,7 +8,7 @@ export const AnimalDetails = () => {
     const [animal, setAnimal] = useState({ location: {}, customer: {} })
     const { animalId } = useParams()
     const history = useHistory()
-    
+
     useEffect(() => {
         getAnimalById(animalId)
             .then(setAnimal)
@@ -22,11 +22,21 @@ export const AnimalDetails = () => {
             <div className="animal__owner">Customer: {animal.customer?.name}</div>
             <div className="animal__status">Status: {animal.status}</div>
 
-            <button onClick={() => releaseAnimal(animal.id).then(() => history.push("/animals"))} >Release Animal</button>
+            {
 
-            <button onClick={() => {
-                history.push(`/animals/edit/${animal.id}`)
-            }}>Edit</button>
+            }
+            
+            
+
+            {
+                animal.customer_id === parseInt(localStorage.getItem("kennel_customer"))
+                    ? <><button onClick={() => releaseAnimal(animal.id).then(() => history.push("/animals"))} >Release Animal</button>
+                    <button onClick={() => {
+                        history.push(`/animals/edit/${animal.id}`)
+                    }}>Edit</button></>
+                    : ""
+            }
+
         </section>
     )
 }

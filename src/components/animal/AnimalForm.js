@@ -10,15 +10,7 @@ export const AnimalForm = () => {
     // Component state
     const [animal, setAnimal] = useState({})
     const history = useHistory()
-    const [initialLocationId, setInitialLocationId] = useState("")
-    useEffect(()=> {
-        if (animal) {
-            setInitialLocationId(animal.location_id)
 
-        } else {
-            return False
-        }
-    },[animal])
     
     // Is there a a URL parameter??
     const editMode = animalId ? true : false  // true or false
@@ -28,8 +20,12 @@ export const AnimalForm = () => {
             When changing a state object or array, always create a new one
             and change state instead of modifying current one
         */
-        const newAnimal = Object.assign({}, animal)          // Create copy
-        newAnimal[event.target.name] = event.target.value    // Modify copy
+        const newAnimal = Object.assign({}, animal)  // Create copy
+        if (event.target.name === "location_id") {
+            newAnimal[event.target.name] = parseInt(event.target.value)    // Modify copy
+        } else {
+            newAnimal[event.target.name] = event.target.value    // Modify copy
+        }
         setAnimal(newAnimal)                                 // Set copy as new state
     }
 
@@ -44,9 +40,8 @@ export const AnimalForm = () => {
     }, [])
 
     const constructNewAnimal = () => {
-        const locationId = parseInt(animal.locationId)
 
-        if (locationId === 0) {
+        if (animal.location_id === 0) {
             window.alert("Please select a location")
         } else {
             if (editMode) {
@@ -56,7 +51,7 @@ export const AnimalForm = () => {
                     name: animal.name,
                     breed: animal.breed,
                     status: animal.status,
-                    location_id: locationId,
+                    location_id: animal.location_id,
                     customer_id: parseInt(localStorage.getItem("kennel_customer"))
                 })
                     .then(() => history.push("/animals"))
@@ -66,7 +61,7 @@ export const AnimalForm = () => {
                     name: animal.name,
                     breed: animal.breed,
                     status: animal.status,
-                    location_id: locationId,
+                    location_id: animal.location_id,
                     customer_id: parseInt(localStorage.getItem("kennel_customer"))
                 })
                     .then(() => history.push("/animals"))
@@ -99,15 +94,14 @@ export const AnimalForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="locationId">Location: </label>
-                    <select name="locationId" className="form-control"
-                        defaultValue={initialLocationId}
+                    <label htmlFor="location_id">Location: </label>
+                    <select name="location_id" className="form-control"
+                        value={animal.location_id}
                         onChange={handleControlledInputChange}>
-
                         <option value="0">Select a location</option>
                         {
                             locations.map(e => (
-                                <option key={e.id} value={e.id}>
+                                <option key={e.id} value={e.id} >
                                     {e.name}
                                 </option>
                             ))

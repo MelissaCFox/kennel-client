@@ -8,7 +8,7 @@ import "./Employees.css"
 export const EmployeeForm = () => {
     const name = useRef(null)
     const location = useRef(null)
-    const animal = useRef(null)
+    const address = useRef(null)
 
     const history = useHistory()
 
@@ -31,15 +31,14 @@ export const EmployeeForm = () => {
             but rather `.current.value` now in React.
         */
         const locationId = parseInt(location.current.value)
-        const animalId = parseInt(animal.current.value)
 
         if (locationId === 0) {
             window.alert("Please select a location")
         } else {
             addEmployee({
                 name: name.current.value,
-                locationId,
-                animalId
+                address: address.current.value,
+                location_id: locationId
             })
             .then(() => history.push("/employees"))
         }
@@ -69,15 +68,8 @@ export const EmployeeForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="location">Caretaker for: </label>
-                    <select defaultValue="" name="animal" ref={animal} id="employeeAnimal" className="form-control" >
-                        <option value="0">Select an animal</option>
-                        {animals.map(e => (
-                            <option key={e.id} value={e.id}>
-                                {e.name}
-                            </option>
-                        ))}
-                    </select>
+                    <label htmlFor="address">Home Address: </label>
+                    <input type="text" id="address" ref={address} required autoFocus className="form-control" placeholder="Employee home address" />
                 </div>
             </fieldset>
             <button type="submit"
