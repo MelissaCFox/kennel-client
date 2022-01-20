@@ -13,7 +13,7 @@ export const AnimalList = () => {
 
     // Initialization effect hook -> Go get animal data
     useEffect(()=> {
-        if (searchTerm.length > 1) {
+        if (searchTerm.length > 0) {
             getAnimalsBySearchTerm(searchTerm).then((animalsData) => setAnimals(animalsData))
         } else {
             getAnimals().then((animalsData) => setAnimals(animalsData))

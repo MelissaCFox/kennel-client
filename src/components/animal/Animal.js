@@ -10,5 +10,6 @@ export default ({ animal }) => (
             </Link>
         </h3>
         <div className="animal__breed">{ animal.breed }</div>
+        <div className="animal__status">Status: {animal.status}</div>
     </section>
 )
